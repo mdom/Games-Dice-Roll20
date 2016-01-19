@@ -11,14 +11,16 @@ sub roll {
     is( $dice->roll($spec), $result, $desc || "$spec -> $result" );
 }
 
+srand( 0.2, 0.8 );
+roll '2d6', 7;
+roll '0',   0;
+
 TODO: {
     local $TODO = 'Not implemented yet';
-    roll '0',         0;
     roll '5+3',       8;
     roll '[[5+3]]',   8;
     roll '0d1',       0;
     roll 'd1',        1;
-    roll '2d6',       2;
     roll '2dF',       -2;
     roll '(1+1)d6',   2;
     roll '1d(3+3)',   2;
