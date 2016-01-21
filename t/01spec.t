@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::MockRandom 'Games::Dice::Roll20';
+use Test::MockRandom 'Games::Dice::Roll20::Dice';
 use Games::Dice::Roll20;
 use Test::More;
 
@@ -8,20 +8,26 @@ my $dice = Games::Dice::Roll20->new();
 
 sub roll {
     my ( $spec, $result, $desc ) = @_;
-    is( $dice->roll($spec), $result, $desc || "$spec -> $result" );
+    is( $dice->eval($spec), $result, $desc || "$spec -> $result" );
 }
+
+roll 'd6',    1;
+roll '12d12', 12;
+roll '2dF',   -2;
+roll 'd6+1',  2;
+roll '0',     0;
+roll '5+3',   8;
+roll '0d1',   0;
+roll 'd1',    1;
+roll 'd6+d6', 2;
 
 srand( 0.2, 0.8 );
 roll '2d6', 7;
-roll '0',   0;
 
 TODO: {
     local $TODO = 'Not implemented yet';
-    roll '5+3',       8;
-    roll '[[5+3]]',   8;
-    roll '0d1',       0;
-    roll 'd1',        1;
-    roll '2dF',       -2;
+    roll '[[5+3]]', 8;
+
     roll '(1+1)d6',   2;
     roll '1d(3+3)',   2;
     roll '3d6>3',     0;
