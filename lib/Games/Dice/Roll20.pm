@@ -6,30 +6,70 @@ use warnings;
 use Parse::RecDescent;
 use Moo;
 
+## grammer stolen from https://github.com/agentzh/perl-parsing-library-benchmark
+
 my $grammer = q{
-	startrule: mult | div | add | sub | op
-	add:  op '+' op { $return = $item[1] + $item[3] }
-	sub:  op '-' op { $return = $item[1] - $item[3] }
-	mult: op '*' op { $return = $item[1] * $item[3] }
-	div:  op '/' op { $return = $item[1] / $item[3] }
-	op: dice | num
-	dice: count 'd' sides
-	      {
+    expr: <leftop: term add_op term>
+        {
+            my $list = $item[1];
+            my $i = 0;
+            my $n = @$list;
+            my $sum = $list->[$i++];
+            while ($i < $n) {
+                my $op = $list->[$i++];
+                my $term = $list->[$i++];
+                if ($op eq '+') {
+                    $sum += $term;
+                } else {
+                    $sum -= $term;
+                }
+            }
+            $return = $sum;
+        }
+    add_op: /[+-]/
+    term: <leftop: atom mul_op atom>
+        {
+            my $list = $item[1];
+            my $i = 0;
+            my $n = @$list;
+            my $sum = $list->[$i++];
+            while ($i < $n) {
+                my $op = $list->[$i++];
+                my $atom = $list->[$i++];
+                if ($op eq '*') {
+                    $sum *= $atom;
+                } else {
+                    $sum /= $atom;
+                }
+            }
+            $return = $sum;
+        }
+    mul_op: /[*\/]/
+    atom:
+          dice
+	| number
+        | '(' <commit> expr ')'  { $return = $item{expr}; }
+        | <error?> <reject>
+    number: /[-+]?\d+(?:\.\d+)?/
+    dice: count 'd' sides
+        {
+		$DB::single=1;
 		$return = Games::Dice::Roll20::Dice->new(
 			amount => $item{count}->[0],
 			sides  => $item{sides},
 		)
-              }
-	count: num(s?)
-	sides: num | 'F'
-	num: /[0-9]+/
+        }
+    modifiers: '<' int | '=' int  | '>' int | '!' | '!!'
+    count: int(s?)
+    sides: int | 'F'
+    int: /\d+/
 };
 
 my $parser = Parse::RecDescent->new($grammer);
 
 sub eval {
     my ( $self, $spec ) = @_;
-    return $parser->startrule($spec);
+    return $parser->expr($spec);
 }
 
 package Games::Dice::Roll20::Dice;
