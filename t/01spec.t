@@ -11,18 +11,21 @@ sub roll {
     is( $dice->eval($spec), $result, $desc || "$spec -> $result" );
 }
 
-roll '2d6',     2;
-roll 'd6+1',    2;
-roll '(2+2)',   4;
-roll '(2+2)*2', 8;
-roll 'd6',      1;
-roll '12d12',   12;
-roll '2dF',     -2;
-roll '0',       0;
-roll '5+3',     8;
-roll '0d1',     0;
-roll 'd1',      1;
-roll 'd6+d6',   2;
+roll '2d6',         2;
+roll 'd6+1',        2;
+roll '(2+2)',       4;
+roll '(2+2)*2',     8;
+roll '2*2+2',       6;
+roll '((2+2)*2)+2', 10;
+roll 'd6',          1;
+roll '12d12',       12;
+roll '2dF',         -2;
+roll '0',           0;
+roll '5+3',         8;
+roll '0d1',         0;
+roll 'd1',          1;
+roll 'd6+d6',       2;
+roll 'd6+d6+d6',    3;
 
 TODO: {
     local $TODO = 'Not implemented yet';
