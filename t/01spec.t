@@ -11,6 +11,7 @@ sub roll {
     is( $dice->eval($spec), $result, $desc || "$spec -> $result" );
 }
 
+#roll '3d6!>2',      1;
 roll '2d6',         2;
 roll 'd6+1',        2;
 roll '(2+2)',       4;
@@ -37,7 +38,6 @@ TODO: {
     roll '10d6<4',    0;
     roll '3d6>3f1',   0;
     roll '10d6<4f>5', 0;
-    roll '3d6!',      0;
     roll '3d6!>5',    0;
     roll '5d6!!',     0;
     roll '5d6!!5',    0;
