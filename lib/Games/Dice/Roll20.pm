@@ -85,6 +85,7 @@ sub eval {
 
 package Games::Dice::Roll20::Dice;
 use Moo;
+use List::Util qw(sum0);
 use overload
   '+'   => \&add,
   '-'   => \&minus,
@@ -101,9 +102,10 @@ has amount => (
     coerce  => sub { defined $_[0] ? $_[0] : 1 }
 );
 
+has modifiers => ( is => 'ro', default => sub { {} } );
+
 sub roll {
     my ($self) = @_;
-    my $result = 0;
     my $num_generator;
     if ( $self->sides eq 'F' ) {
         $num_generator = sub { int( rand 3 ) - 1 };
@@ -111,9 +113,29 @@ sub roll {
     else {
         $num_generator = sub { int( rand( $self->sides ) ) + 1 };
     }
+    my @throws;
     for ( 1 .. $self->amount ) {
-        $result += $num_generator->();
+        push @throws, $num_generator->();
     }
+
+    if ( $self->modifiers->{exploding} ) {
+        my ( $op, $target ) = @{ $self->modifiers->{exploding} };
+        $op ||= '=';
+        $target ||= $self->sides;
+        my @a = @throws;
+        while ( my $throw = shift @a ) {
+            if (   $op eq '=' && $throw == $target
+                or $op eq '>' && $throw >= $target
+                or $op eq '<' && $throw <= $target )
+            {
+                my $new_die = $num_generator->();
+                push @throws, $new_die;
+                push @a,      $new_die;
+            }
+        }
+    }
+
+    my $result = sum0 @throws;
     return $result;
 }
 
