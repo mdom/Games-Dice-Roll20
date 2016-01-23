@@ -51,7 +51,7 @@ my $grammer = q{
         | '(' <commit> expr ')'  { $return = $item{expr}; }
         | <error?> <reject>
     number: /[-+]?\d+(?:\.\d+)?/
-    dice: count 'd' sides modifiers(s?)
+    dice: count 'd' sides modifiers[sides => $item{sides}](s?)
         {
                 $return = Games::Dice::Roll20::Dice->new(
                     amount    => $item{count}->[0],
@@ -62,7 +62,11 @@ my $grammer = q{
                   )
               }
     modifiers: exploding
-    exploding: '!' compare_point { $return = [ $item[0] =>  $item[2] ] }
+    exploding: '!' compare_point(s?)
+	    {
+		$return =
+		  [ $item[0], $item[2]->[0] ? $item[2]->[0] : [ '=', $arg{sides} ] ]
+	    }
     compare_point: '<' int { [@item[1,2]] }
                  | '=' int { [@item[1,2]] }
 		 | '>' int { [@item[1,2]] }
