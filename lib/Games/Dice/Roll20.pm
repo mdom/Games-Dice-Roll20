@@ -53,14 +53,16 @@ my $grammer = q{
     number: /[-+]?\d+(?:\.\d+)?/
     dice: count 'd' sides modifiers(s?)
         {
-		$return = Games::Dice::Roll20::Dice->new(
-			amount => $item{count}->[0],
-			sides  => $item{sides},
-			modifiers => $item{'modifiers(s?)'},
-		)
-        }
+                $return = Games::Dice::Roll20::Dice->new(
+                    amount    => $item{count}->[0],
+                    sides     => $item{sides},
+                    modifiers => {
+                        map { $_->[0] => $_->[1] } @{ $item{'modifiers(s?)'} }
+                    },
+                  )
+              }
     modifiers: exploding
-    exploding: '!' compare_point { $return = [ $item[0], @{$item[2]} ] }
+    exploding: '!' compare_point { $return = [ $item[0] =>  $item[2] ] }
     compare_point: '<' int { [@item[1,2]] }
                  | '=' int { [@item[1,2]] }
 		 | '>' int { [@item[1,2]] }
