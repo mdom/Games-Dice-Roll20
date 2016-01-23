@@ -14,7 +14,7 @@ my $grammer = q{
             my $list = $item[1];
             my $i = 0;
             my $n = @$list;
-            my $sum = $list->[$i++];
+            my $sum = 0 + $list->[$i++];
             while ($i < $n) {
                 my $op = $list->[$i++];
                 my $term = $list->[$i++];
@@ -32,7 +32,7 @@ my $grammer = q{
             my $list = $item[1];
             my $i = 0;
             my $n = @$list;
-            my $sum = $list->[$i++];
+            my $sum = 0 + $list->[$i++];
             while ($i < $n) {
                 my $op = $list->[$i++];
                 my $atom = $list->[$i++];
