@@ -61,7 +61,12 @@ my $grammer = q{
                     },
                   )
               }
-    modifiers: exploding
+    modifiers: compounding | exploding
+    compounding: '!!' compare_point(s?)
+	    {
+		$return =
+		  [ $item[0], $item[2]->[0] ? $item[2]->[0] : [ '=', $arg{sides} ] ]
+	    }
     exploding: '!' compare_point(s?)
 	    {
 		$return =
@@ -130,6 +135,21 @@ sub roll {
                 push @a,      $new_die;
             }
         }
+    }
+    if ( $self->modifiers->{compounding} ) {
+        my ( $op, $target ) = @{ $self->modifiers->{compounding} };
+        $op ||= '=';
+        $target ||= $self->sides;
+        my @a;
+        while ( my $throw = shift @throws ) {
+            my $new_die = $throw;
+            while ( $self->matches_cp( $throw, $op, $target ) ) {
+                $throw = $num_generator->();
+                $new_die += $throw;
+            }
+            push @a, $new_die;
+        }
+        @throws = @a;
     }
 
     my $result = sum0 @throws;
