@@ -124,10 +124,7 @@ sub roll {
         $target ||= $self->sides;
         my @a = @throws;
         while ( my $throw = shift @a ) {
-            if (   $op eq '=' && $throw == $target
-                or $op eq '>' && $throw >= $target
-                or $op eq '<' && $throw <= $target )
-            {
+            if ( $self->matches_cp( $throw, $op, $target ) ) {
                 my $new_die = $num_generator->();
                 push @throws, $new_die;
                 push @a,      $new_die;
@@ -137,6 +134,13 @@ sub roll {
 
     my $result = sum0 @throws;
     return $result;
+}
+
+sub matches_cp {
+    my ( $self, $throw, $op, $target ) = @_;
+    return $throw == $target if $op eq '=';
+    return $throw >= $target if $op eq '>';
+    return $throw <= $target if $op eq '<';
 }
 
 sub add {
