@@ -61,7 +61,8 @@ my $grammer = q{
                     },
                   )
               }
-    modifiers: compounding | exploding
+    modifiers: compounding | exploding | successes
+    successes: compare_point { $return = \@item }
     compounding: '!!' compare_point(s?)
 	    {
 		$return =
@@ -152,7 +153,16 @@ sub roll {
         @throws = @a;
     }
 
-    my $result = sum0 @throws;
+    my $result;
+    if ( $self->modifiers->{successes} ) {
+        my ( $op, $target ) = @{ $self->modifiers->{successes} };
+        $result = grep { $self->matches_cp( $_, $op, $target ) } @throws;
+    }
+    else {
+        $result = sum0 @throws;
+    }
+
+    $DB::single = 1;
     return $result;
 }
 

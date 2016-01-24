@@ -12,6 +12,12 @@ sub roll {
 }
 
 srand(0.9);
+roll '10d6<4', 9;
+srand( 0.9, 0.9 );
+roll '10d6>4', 2;
+srand(0.9);
+roll '10d6=6', 1;
+srand(0.9);
 roll '5d6!!', 11;
 srand(0.75);
 roll '5d6!!5', 10;
@@ -42,7 +48,6 @@ TODO: {
     roll '(1+1)d6',   2;
     roll '1d(3+3)',   2;
     roll '3d6>3',     0;
-    roll '10d6<4',    0;
     roll '3d6>3f1',   0;
     roll '10d6<4f>5', 0;
     roll '5d6!p',     0;
