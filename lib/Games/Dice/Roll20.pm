@@ -84,7 +84,7 @@ my $grammer = q{
                  | '=' int { [@item[1,2]] }
 		 | '>' int { [@item[1,2]] }
 		 |     int { ['=',$item[1]] }
-    count: int(s?)
+    count: '(' expr ')' { $return = [$item[2]] } | int(s?)
     sides: int | 'F'
     int: /\d+/
 };
