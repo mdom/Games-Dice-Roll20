@@ -46,6 +46,12 @@ my $grammer = q{
                | exploding
                | successes_and_failures
                | keep_and_drop
+               | rerolling
+
+    rerolling: 'r' compare_point(s?)
+    {
+       $return = [ 'rerolling', $item[2]->[0] ? $item[2]->[0] : [ '=', 1 ] ]
+    }
 
     keep_and_drop:   'kh' int { $return = [ 'keep_highest' => $item[2] ] }
                    | 'kl' int { $return = [ 'keep_lowest'  => $item[2] ] }

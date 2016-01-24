@@ -11,6 +11,13 @@ sub roll {
     is( $dice->eval($spec), $result, $desc || "$spec -> $result" );
 }
 
+srand( 0.99, 0.001, 0.999 );
+roll '2d10r<2', 20;
+srand( 0.99, 0.001, 0.999 );
+roll '2d10r', 20;
+srand( 0.99, 0.001, 0.999 );
+roll '2d10r=10', 2;
+
 srand( 0.5, 0.5, 0.5, 0.5 );
 roll '8d100k4', 204;
 srand( 0.5, 0.5, 0.5, 0.5 );

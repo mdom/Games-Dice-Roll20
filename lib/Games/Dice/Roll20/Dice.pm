@@ -63,6 +63,19 @@ sub roll {
         @throws = @a;
     }
 
+    if ( $self->modifiers->{rerolling} ) {
+        my ( $op, $target ) = @{ $self->modifiers->{rerolling} };
+        my @new_throws;
+        for my $throw (@throws) {
+            if ( $self->matches_cp( $throw, $op, $target ) ) {
+                $throw = $num_generator->();
+                redo;
+            }
+            push @new_throws, $throw;
+        }
+        @throws = @new_throws;
+    }
+
     for my $key (qw( keep_highest keep_lowest drop_highest drop_lowest )) {
         if ( my $number = $self->modifiers->{$key} ) {
             @throws = $self->keep_and_drop( $number, $key, @throws );
