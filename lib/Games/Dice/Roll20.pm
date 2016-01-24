@@ -194,33 +194,11 @@ sub roll {
         @throws = @a;
     }
 
-    if ( $self->modifiers->{keep_highest} ) {
-        my $number = $self->modifiers->{keep_highest};
-        my $i      = 0;
-        @throws = sort { $b->[0] <=> $a->[0] } map { [ $_, $i++ ] } @throws;
-        @throws = @throws[ 0 .. $number - 1 ];
-        @throws = map { $_->[0] } sort { $a->[1] <=> $b->[1] } @throws;
-    }
-    elsif ( $self->modifiers->{keep_lowest} ) {
-        my $number = $self->modifiers->{keep_lowest};
-        my $i      = 0;
-        @throws = sort { $a->[0] <=> $b->[0] } map { [ $_, $i++ ] } @throws;
-        @throws = @throws[ 0 .. $number - 1 ];
-        @throws = map { $_->[0] } sort { $a->[1] <=> $b->[1] } @throws;
-    }
-    elsif ( $self->modifiers->{drop_highest} ) {
-        my $number = $self->modifiers->{drop_highest};
-        my $i      = 0;
-        @throws = sort { $b->[0] <=> $a->[0] } map { [ $_, $i++ ] } @throws;
-        splice( @throws, 0, $number );
-        @throws = map { $_->[0] } sort { $a->[1] <=> $b->[1] } @throws;
-    }
-    elsif ( $self->modifiers->{drop_lowest} ) {
-        my $number = $self->modifiers->{drop_lowest};
-        my $i      = 0;
-        @throws = sort { $a->[0] <=> $b->[0] } map { [ $_, $i++ ] } @throws;
-        splice( @throws, 0, $number );
-        @throws = map { $_->[0] } sort { $a->[1] <=> $b->[1] } @throws;
+    for my $key (qw( keep_highest keep_lowest drop_highest drop_lowest )) {
+        if ( my $number = $self->modifiers->{$key} ) {
+            @throws = $self->keep_and_drop( $number, $key, @throws );
+            last;
+        }
     }
 
     my $result;
@@ -238,6 +216,22 @@ sub roll {
 
     $DB::single = 1;
     return $result;
+}
+
+sub keep_and_drop {
+    my ( $self, $number, $action, @throws ) = @_;
+    my ( $do, $to ) = split( '_', $action, 2 );
+    my $i = 0;
+    @throws =
+      sort { $to eq 'highest' ? $b->[0] <=> $a->[0] : $a->[0] <=> $b->[0] }
+      map { [ $_, $i++ ] } @throws;
+    if ( $do eq 'drop' ) {
+        splice( @throws, 0, $number );
+    }
+    else {
+        @throws = @throws[ 0 .. $number - 1 ];
+    }
+    return map { $_->[0] } sort { $a->[1] <=> $b->[1] } @throws;
 }
 
 sub matches_cp {
