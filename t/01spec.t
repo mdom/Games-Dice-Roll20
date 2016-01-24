@@ -11,7 +11,10 @@ sub roll {
     is( $dice->eval($spec), $result, $desc || "$spec -> $result" );
 }
 
-srand(0,0,0,0.99,0.99);
+## limit rerolls
+roll '2d6r<2', 2;
+
+srand( 0, 0, 0, 0.99, 0.99 );
 roll '2d6ro<2', 7;
 
 srand(0.99);
