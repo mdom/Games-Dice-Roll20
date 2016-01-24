@@ -61,7 +61,7 @@ my $grammer = q{
                     },
                   )
               }
-    modifiers: compounding | exploding | successes_and_failures
+    modifiers: compounding | penetrating | exploding | successes_and_failures
     successes_and_failures: successes failures(s?) { $return = [ successes => $item[1], failures => $item[2]->[0] ] }
     successes: compare_point
     failures: 'f' compare_point
@@ -69,6 +69,11 @@ my $grammer = q{
 	    {
 		$return =
 		  [ $item[0], $item[2]->[0] ? $item[2]->[0] : [ '=', $arg{sides} ] ]
+	    }
+    penetrating: '!p' compare_point(s?)
+            {
+		$return =
+		  [ $item[0], 1, 'exploding', $item[2]->[0] ? $item[2]->[0] : [ '=', $arg{sides} ] ]
 	    }
     exploding: '!' compare_point(s?)
 	    {
@@ -134,6 +139,7 @@ sub roll {
         while ( my $throw = shift @a ) {
             if ( $self->matches_cp( $throw, $op, $target ) ) {
                 my $new_die = $num_generator->();
+		$new_die -=1 if $self->modifiers->{penetrating};
                 push @throws, $new_die;
                 push @a,      $new_die;
             }
