@@ -46,7 +46,13 @@ my $grammer = q{
                | exploding
                | successes_and_failures
                | keep_and_drop
-               | rerolling
+               | rerolling(s?)
+                {
+                    $return =
+                      @{ $item[1] }
+                      ? [ 'rerolling', [ map { $_->[1] } @{ $item[1] } ] ]
+                      : undef;
+                }
 
     rerolling: 'r' compare_point(s?)
     {
