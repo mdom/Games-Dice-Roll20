@@ -61,7 +61,10 @@ my $grammer = q{
                     },
                   )
               }
-    modifiers: compounding | penetrating | exploding | successes_and_failures
+    modifiers:   compounding
+               | penetrating
+               | exploding
+               | successes_and_failures
     successes_and_failures: successes failures(s?) { $return = [ successes => $item[1], failures => $item[2]->[0] ] }
     successes: compare_point
     failures: 'f' compare_point
