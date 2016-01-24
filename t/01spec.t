@@ -13,6 +13,8 @@ sub roll {
 
 srand( 0.5, 0.5, 0.5, 0.5 );
 roll '8d100k4', 204;
+srand( 0.5, 0.5, 0.5, 0.5 );
+roll '8d100kl4', 4;
 
 srand(0.9);
 roll '4d(3+3)', 9;
