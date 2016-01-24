@@ -10,92 +10,115 @@ use Moo;
 
 my $grammer = q{
     expr: <leftop: term add_op term>
-        {
-            my $list = $item[1];
-            my $i = 0;
-            my $n = @$list;
-            my $sum = 0 + $list->[$i++];
-            while ($i < $n) {
-                my $op = $list->[$i++];
-                my $term = $list->[$i++];
-                if ($op eq '+') {
-                    $sum += $term;
-                } else {
-                    $sum -= $term;
-                }
+    {
+        my $list = $item[1];
+        my $i    = 0;
+        my $n    = @$list;
+        my $sum  = 0 + $list->[ $i++ ];
+        while ( $i < $n ) {
+            my $op   = $list->[ $i++ ];
+            my $term = $list->[ $i++ ];
+            if ( $op eq '+' ) {
+                $sum += $term;
             }
-            $return = $sum;
+            else {
+                $sum -= $term;
+            }
         }
+        $return = $sum;
+    }
+
     add_op: /[+-]/
+
     term: <leftop: atom mul_op atom>
-        {
-            my $list = $item[1];
-            my $i = 0;
-            my $n = @$list;
-            my $sum = 0 + $list->[$i++];
-            while ($i < $n) {
-                my $op = $list->[$i++];
-                my $atom = $list->[$i++];
-                if ($op eq '*') {
-                    $sum *= $atom;
-                } else {
-                    $sum /= $atom;
-                }
+    {
+        my $list = $item[1];
+        my $i    = 0;
+        my $n    = @$list;
+        my $sum  = 0 + $list->[ $i++ ];
+        while ( $i < $n ) {
+            my $op   = $list->[ $i++ ];
+            my $atom = $list->[ $i++ ];
+            if ( $op eq '*' ) {
+                $sum *= $atom;
             }
-            $return = $sum;
+            else {
+                $sum /= $atom;
+            }
         }
+        $return = $sum;
+    }
+
     mul_op: /[*\/]/
+
     atom:
           dice
-	| number
-        | '(' <commit> expr ')'  { $return = $item{expr}; }
+        | number
+        | '(' <commit> expr ')'  { $return = $item{expr} }
         | <error?> <reject>
+
     number: /[-+]?\d+(?:\.\d+)?/
+
     dice: count 'd' sides modifiers[sides => $item{sides}](s?)
-        {
-                $return = Games::Dice::Roll20::Dice->new(
-                    amount    => $item{count}->[0],
-                    sides     => $item{sides},
-                    modifiers => {
-                        map { @{$_} } @{ $item{'modifiers(s?)'} }
-                    },
-                  )
-              }
+    {
+        $return = Games::Dice::Roll20::Dice->new(
+            amount    => $item{count}->[0],
+            sides     => $item{sides},
+            modifiers => { map { @{$_} } @{ $item{'modifiers(s?)'} } },
+          )
+    }
+
     modifiers:   compounding
                | penetrating
                | exploding
                | successes_and_failures
                | keep_and_drop
+
     keep_and_drop:   'kh' int { $return = [ 'keep_highest' => $item[2] ] }
                    | 'kl' int { $return = [ 'keep_lowest'  => $item[2] ] }
                    | 'k'  int { $return = [ 'keep_highest' => $item[2] ] }
                    | 'dh' int { $return = [ 'drop_highest' => $item[2] ] }
                    | 'dl' int { $return = [ 'drop_lowest'  => $item[2] ] }
                    | 'd'  int { $return = [ 'drop_lowest'  => $item[2] ] }
+
     successes_and_failures: successes failures(s?) { $return = [ successes => $item[1], failures => $item[2]->[0] ] }
+
     successes: compare_point
+
     failures: 'f' compare_point
+
     compounding: '!!' compare_point(s?)
-	    {
-		$return =
-		  [ $item[0], $item[2]->[0] ? $item[2]->[0] : [ '=', $arg{sides} ] ]
-	    }
+    {
+        $return =
+          [ $item[0], $item[2]->[0] ? $item[2]->[0] : [ '=', $arg{sides} ] ]
+    }
+
     penetrating: '!p' compare_point(s?)
-            {
-		$return =
-		  [ $item[0], 1, 'exploding', $item[2]->[0] ? $item[2]->[0] : [ '=', $arg{sides} ] ]
-	    }
+    {
+        $return = [
+            $item[0], 1,
+            'exploding', $item[2]->[0] ? $item[2]->[0] : [ '=', $arg{sides} ]
+          ]
+    }
+
     exploding: '!' compare_point(s?)
-	    {
-		$return =
-		  [ $item[0], $item[2]->[0] ? $item[2]->[0] : [ '=', $arg{sides} ] ]
-	    }
-    compare_point: '<' int { [@item[1,2]] }
-                 | '=' int { [@item[1,2]] }
-		 | '>' int { [@item[1,2]] }
-		 |     int { ['=',$item[1]] }
-    count: '(' expr ')' { $return = [$item[2]] } | int(s?)
-    sides: '(' expr ')' { $return = $item[2] } | int | 'F'
+    {
+        $return =
+          [ $item[0], $item[2]->[0] ? $item[2]->[0] : [ '=', $arg{sides} ] ]
+    }
+
+    compare_point:   '<' int { [@item[1,2]] }
+                   | '=' int { [@item[1,2]] }
+                   | '>' int { [@item[1,2]] }
+                   |     int { ['=',$item[1]] }
+
+    count:   '(' expr ')' { $return = [$item[2]] }
+           | int(s?)
+
+    sides:   '(' expr ')' { $return = $item[2] }
+           | int
+           | 'F'
+
     int: /\d+/
 };
 
