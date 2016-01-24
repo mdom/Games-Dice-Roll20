@@ -12,9 +12,9 @@ sub roll {
 }
 
 srand(0.9);
-roll '5d6!p',     10;
+roll '5d6!p', 10;
 srand(0.9);
-roll '5d6!p>5',   10;
+roll '5d6!p>5', 10;
 srand(0.9);
 roll '3d6>3f1', -1;
 srand(0.9);
@@ -53,11 +53,8 @@ TODO: {
     local $TODO = 'Not implemented yet';
     roll '[[5+3]]', 8;
 
-    roll '(1+1)d6',   2;
-    roll '1d(3+3)',   2;
-    roll '3d6>3',     0;
-    roll '3d6>3f1',   0;
-    roll '10d6<4f>5', 0;
+    roll '(1+1)d6', 2;
+    roll '1d(3+3)', 2;
 }
 
 done_testing;
