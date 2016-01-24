@@ -57,12 +57,14 @@ my $grammer = q{
                     amount    => $item{count}->[0],
                     sides     => $item{sides},
                     modifiers => {
-                        map { $_->[0] => $_->[1] } @{ $item{'modifiers(s?)'} }
+                        map { @{$_} } @{ $item{'modifiers(s?)'} }
                     },
                   )
               }
-    modifiers: compounding | exploding | successes
-    successes: compare_point { $return = \@item }
+    modifiers: compounding | exploding | successes_and_failures
+    successes_and_failures: successes failures(s?) { $return = [ successes => $item[1], failures => $item[2]->[0] ] }
+    successes: compare_point
+    failures: 'f' compare_point
     compounding: '!!' compare_point(s?)
 	    {
 		$return =
@@ -157,6 +159,10 @@ sub roll {
     if ( $self->modifiers->{successes} ) {
         my ( $op, $target ) = @{ $self->modifiers->{successes} };
         $result = grep { $self->matches_cp( $_, $op, $target ) } @throws;
+	if ( $self->modifiers->{failures} ) {
+		my ( $op, $target ) = @{ $self->modifiers->{failures} };
+		$result -= grep { $self->matches_cp( $_, $op, $target ) } @throws;
+	}
     }
     else {
         $result = sum0 @throws;

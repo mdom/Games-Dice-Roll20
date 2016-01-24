@@ -12,6 +12,10 @@ sub roll {
 }
 
 srand(0.9);
+roll '3d6>3f1', -1;
+srand(0.9);
+roll '10d6<4f>5', 8;
+srand(0.9);
 roll '10d6<4', 9;
 srand( 0.9, 0.9 );
 roll '10d6>4', 2;
