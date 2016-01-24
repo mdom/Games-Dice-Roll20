@@ -11,42 +11,14 @@ use Moo;
 my $grammer = q{
     expr: <leftop: term add_op term>
     {
-        my $list = $item[1];
-        my $i    = 0;
-        my $n    = @$list;
-        my $sum  = 0 + $list->[ $i++ ];
-        while ( $i < $n ) {
-            my $op   = $list->[ $i++ ];
-            my $term = $list->[ $i++ ];
-            if ( $op eq '+' ) {
-                $sum += $term;
-            }
-            else {
-                $sum -= $term;
-            }
-        }
-        $return = $sum;
+        $return = Games::Dice::Roll20::_reduce_list( @{ $item[1] } )
     }
 
     add_op: /[+-]/
 
     term: <leftop: atom mul_op atom>
     {
-        my $list = $item[1];
-        my $i    = 0;
-        my $n    = @$list;
-        my $sum  = 0 + $list->[ $i++ ];
-        while ( $i < $n ) {
-            my $op   = $list->[ $i++ ];
-            my $atom = $list->[ $i++ ];
-            if ( $op eq '*' ) {
-                $sum *= $atom;
-            }
-            else {
-                $sum /= $atom;
-            }
-        }
-        $return = $sum;
+        $return = Games::Dice::Roll20::_reduce_list( @{ $item[1] } )
     }
 
     mul_op: /[*\/]/
@@ -127,6 +99,20 @@ my $parser = Parse::RecDescent->new($grammer);
 sub eval {
     my ( $self, $spec ) = @_;
     return $parser->expr($spec);
+}
+
+sub _reduce_list {
+    my (@list) = @_;
+    my $sum = 0 + shift(@list);
+    while (@list) {
+        my $op   = shift @list;
+        my $term = shift @list;
+        if ( $op eq '+' ) { $sum += $term; }
+        elsif ( $op eq '-' ) { $sum -= $term }
+        elsif ( $op eq '*' ) { $sum *= $term }
+        elsif ( $op eq '/' ) { $sum /= $term }
+    }
+    return $sum;
 }
 
 package Games::Dice::Roll20::Dice;
