@@ -47,16 +47,18 @@ my $grammer = q{
                | successes_and_failures
                | keep_and_drop
                | rerolling(s?)
-                {
+                 {
                     $return =
                       @{ $item[1] }
-                      ? [ 'rerolling', [ map { $_->[1] } @{ $item[1] } ] ]
+                      ? [ 'rerolling', [ map { $_->[0] } @{ $item[1] } ] ]
                       : undef;
-                }
+                 }
 
-    rerolling: 'r' compare_point(s?)
+    rerolling: 'r' ('o')(?) compare_point(s?)
     {
-       $return = [ 'rerolling', $item[2]->[0] ? $item[2]->[0] : [ '=', 1 ] ]
+        $return =
+          [ $item[3]->[0] ? $item[3]->[0] : [ '=', 1 ] ];
+        push @{ $return->[0] }, $item[2]->[0];
     }
 
     keep_and_drop:   'kh' int { $return = [ 'keep_highest' => $item[2] ] }

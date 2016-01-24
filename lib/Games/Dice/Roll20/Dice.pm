@@ -66,11 +66,11 @@ sub roll {
     if ( $self->modifiers->{rerolling} ) {
         for my $cp ( @{ $self->modifiers->{rerolling} } ) {
             my @new_throws;
-            my ( $op, $target ) = @$cp;
+            my ( $op, $target, $once ) = @$cp;
             for my $throw (@throws) {
                 if ( $self->matches_cp( $throw, $op, $target ) ) {
                     $throw = $num_generator->();
-                    redo;
+                    redo unless $once;
                 }
                 push @new_throws, $throw;
             }
