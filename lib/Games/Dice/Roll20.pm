@@ -69,6 +69,7 @@ my $grammer = q{
     keep_and_drop:   'kh' int { $return = [ 'keep_highest' => $item[2] ] }
                    | 'kl' int { $return = [ 'keep_lowest'  => $item[2] ] }
                    | 'k'  int { $return = [ 'keep_highest' => $item[2] ] }
+                   | 'dh' int { $return = [ 'drop_highest' => $item[2] ] }
     successes_and_failures: successes failures(s?) { $return = [ successes => $item[1], failures => $item[2]->[0] ] }
     successes: compare_point
     failures: 'f' compare_point
@@ -180,6 +181,13 @@ sub roll {
         my $i      = 0;
         @throws = sort { $a->[0] <=> $b->[0] } map { [ $_, $i++ ] } @throws;
         @throws = @throws[ 0 .. $number - 1 ];
+        @throws = map { $_->[0] } sort { $a->[1] <=> $b->[1] } @throws;
+    }
+    elsif ( $self->modifiers->{drop_highest} ) {
+        my $number = $self->modifiers->{drop_highest};
+        my $i      = 0;
+        @throws = sort { $b->[0] <=> $a->[0] } map { [ $_, $i++ ] } @throws;
+        splice( @throws, 0, $number );
         @throws = map { $_->[0] } sort { $a->[1] <=> $b->[1] } @throws;
     }
 
