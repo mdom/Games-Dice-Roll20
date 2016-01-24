@@ -20,6 +20,9 @@ roll '8d100dh4', 4;
 srand( 0.5, 0.5, 0.5, 0.5 );
 roll '8d100d4', 204;
 
+roll '4d6dl2', 2;
+roll '4d6kh2', 2;
+
 srand(0.9);
 roll '4d(3+3)', 9;
 srand(0.9);
