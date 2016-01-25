@@ -308,6 +308,8 @@ result values are known.
 
 =head2 Grouped Rolls
 
+B<This section is not yet implemented>
+
 Mutliple rolls can be perfomed within a group via curly braces using a comma to
 seperate the sub-roll expressions I<{3d6+3d4+5, 2d8+4}>. Grouped Rolls have
 their own set of Group Modifiers which perform actions across the whole group.
