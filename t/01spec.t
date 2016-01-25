@@ -8,7 +8,7 @@ my $dice = Games::Dice::Roll20->new();
 
 sub roll {
     my ( $spec, $result, $desc ) = @_;
-    is( $dice->eval($spec), $result, $desc || "$spec -> $result" );
+    is( $dice->roll($spec), $result, $desc || "$spec -> $result" );
 }
 
 ## limit rerolls

@@ -111,7 +111,7 @@ my $grammer = q{
 
 my $parser = Parse::RecDescent->new($grammer);
 
-sub eval {
+sub roll {
     my ( $self, $spec ) = @_;
     return $parser->expr($spec);
 }
