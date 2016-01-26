@@ -6,10 +6,27 @@ use warnings;
 use Moo;
 use Parse::RecDescent;
 use Games::Dice::Roll20::Dice;
+use POSIX qw(ceil floor);
 
 ## grammer stolen from https://github.com/agentzh/perl-parsing-library-benchmark
 
 my $grammer = q{
+
+    {
+        my %valid_functions = (
+            ceil  => \&POSIX::ceil,
+            floor => \&POSIX::floor,
+            abs   => \&POSIX::abs,
+
+            ## to be consistent with roll20 is use the floor + 0.5 method
+            ## instead of Math::Random.
+
+            round => sub { POSIX::floor( $_[0] + 0.5 ) },
+        );
+
+        my $function_re = join( '|', keys %valid_functions );
+    }
+
     expr: <leftop: term add_op term>
     {
         $return = Games::Dice::Roll20::_reduce_list( @{ $item[1] } )
@@ -17,12 +34,19 @@ my $grammer = q{
 
     add_op: /[+-]/
 
-    term: <leftop: atom mul_op atom>
+    term: <leftop: call mul_op call>
     {
         $return = Games::Dice::Roll20::_reduce_list( @{ $item[1] } )
     }
 
     mul_op: /[*\/]/
+
+    call: /$function_re/o '(' expr ')'
+        {
+            $return = $valid_functions{ $item[1] }->( $item[3] );
+        }
+         | atom
+
 
     atom:
           dice

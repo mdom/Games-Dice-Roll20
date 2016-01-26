@@ -11,6 +11,16 @@ sub roll {
     is( $dice->roll($spec), $result, $desc || "$spec -> $result" );
 }
 
+srand(0.7);
+roll 'ceil(d6/2)', 3;
+srand(0.7);
+roll 'floor(d6/2)', 2;
+
+roll 'abs(-2)',     2;
+roll 'round(2.4)',  2;
+roll 'round(2.5)',  3;
+roll 'round(-2.5)', -2;
+
 ## limit rerolls
 roll '2d6r<2', 2;
 

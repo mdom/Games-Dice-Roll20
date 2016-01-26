@@ -306,6 +306,36 @@ result values are known.
 
 =back
 
+=head1 Rounding Rolls and Math Functions
+
+You may want to use rounding in your roll formulas to emulate mechanics such as
+"half a level, rounded down to the nearest level." Roll20 provides several
+functions to accomplish this:
+
+=over 4
+
+=item *
+
+I<floor()> which will always round the number down (e.g. 5.7 becomes 5)
+
+=item *
+
+I<ceil()> which will always round the number up (e.g. 5.1 becomes 6)
+
+=item *
+
+I<round()> which will always round to the nearest whole number (e.g. 4.4
+becomes 4 and 4.5 becomes 5).
+
+=item *
+
+I<abs()> will calculate the absolute value of the roll
+
+=back
+
+You can use these functions almost anywhere in your roll formulas (around a
+single math expression, groups of math expressions, or even the entire roll).
+
 =head2 Grouped Rolls
 
 B<This section is not yet implemented>
