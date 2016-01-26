@@ -1,4 +1,7 @@
 package Games::Dice::Roll20::Dice;
+use strict;
+use warnings;
+
 use Moo;
 use List::Util qw(sum0);
 use overload
