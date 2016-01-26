@@ -92,7 +92,10 @@ my $grammer = q{
                    | 'dl' int { $return = [ 'drop_lowest'  => $item[2] ] }
                    | 'd'  int { $return = [ 'drop_lowest'  => $item[2] ] }
 
-    successes_and_failures: successes failures(s?) { $return = [ successes => $item[1], failures => $item[2]->[0] ] }
+    successes_and_failures: successes failures(s?)
+    {
+        $return = [ successes => $item[1], failures => $item[2]->[0] ]
+    }
 
     successes: compare_point
 
