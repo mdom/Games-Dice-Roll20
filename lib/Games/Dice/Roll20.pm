@@ -8,6 +8,8 @@ use Parse::RecDescent;
 use Games::Dice::Roll20::Dice;
 use POSIX qw(ceil floor);
 
+our $VERSION = '0.01';
+
 ## grammer stolen from https://github.com/agentzh/perl-parsing-library-benchmark
 
 my $grammer = q{
