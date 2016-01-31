@@ -178,31 +178,28 @@ Games::Dice::Roll20 - Simulate dice rolls with Roll20's syntax
 
 =head1 DESCRIPTION
 
-Games::Dice::Roll20 simulates dice rolls by using a syntax
-familiar to players of role playing games. In contrast to many
-similar projects it does not only support simple constructs like
-I<2d6+4> but aims to simulate complex dice mechanics like exploding,
-re-rolling and keeping and dropping high or low dice. It shoold
-be a almost complete implementation of the dice specification by
-L<Roll20|https://wiki.roll20.net/Dice_Reference>. The supported
-features and deviations from this specifications are listed in L<our own
+Games::Dice::Roll20 simulates dice rolls by using a syntax familiar to players
+of role playing games. In contrast to many similar projects it does not only
+support simple constructs like I<2d6+4> but aims to simulate complex dice
+mechanics like exploding, re-rolling and keeping and dropping high or low dice.
+It shoold be a almost complete implementation of the dice specification by
+L<Roll20|https://wiki.roll20.net/Dice_Reference>. The supported features and
+deviations from this specifications are listed in L<our own
 specification|https://github.com/mdom/Games-Dice-Roll20/blob/master/lib/Games/Dice/Roll20/Spec.pod>.
 
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 2015 Mario Domgoergen C<< <mario@domgoergen.com> >>
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <http://www.gnu.org/licenses/>.
 =cut
