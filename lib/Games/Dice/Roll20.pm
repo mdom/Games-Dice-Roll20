@@ -171,7 +171,7 @@ Games::Dice::Roll20 - Simulate dice rolls with Roll20's syntax
 
 =head1 SYNOPSIS
 
-  my $dice = Games::Dice->new();
+  my $dice = Games::Dice::Roll20->new();
   say $dice->roll('3d20+5');
   say $dice->roll('d6*10+d6');
   say $dice->roll('10d6rk4>5');
