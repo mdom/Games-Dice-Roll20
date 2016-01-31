@@ -11,15 +11,24 @@ sub roll {
     is( $dice->roll($spec), $result, $desc || "$spec -> $result" );
 }
 
-srand(0.7);
-roll 'ceil(d6/2)', 3;
-srand(0.7);
-roll 'floor(d6/2)', 2;
+# math expressions
 
 roll 'abs(-2)',     2;
 roll 'round(2.4)',  2;
 roll 'round(2.5)',  3;
 roll 'round(-2.5)', -2;
+roll '0',           0;
+roll '5+3',         8;
+roll '(2+2)',       4;
+roll '(2+2)*2',     8;
+roll '2*2+2',       6;
+roll '((2+2)*2)+2', 10;
+
+srand(0.7);
+roll 'ceil(d6/2)', 3;
+
+srand(0.7);
+roll 'floor(d6/2)', 2;
 
 ## limit rerolls
 roll '2d6r<2', 2;
@@ -74,22 +83,16 @@ roll '5d6!!5', 10;
 srand(0.9);
 roll '3d6!>5', 9;
 srand( 0.9, 0.9 );
-roll '2d6!',        14;
-roll '2d6',         2;
-roll 'd6+1',        2;
-roll '(2+2)',       4;
-roll '(2+2)*2',     8;
-roll '2*2+2',       6;
-roll '((2+2)*2)+2', 10;
-roll 'd6',          1;
-roll '12d12',       12;
-roll '2dF',         -2;
-roll '0',           0;
-roll '5+3',         8;
-roll '0d1',         0;
-roll 'd1',          1;
-roll 'd6+d6',       2;
-roll 'd6+d6+d6',    3;
+roll '2d6!',     14;
+roll '2d6',      2;
+roll 'd6+1',     2;
+roll 'd6',       1;
+roll '12d12',    12;
+roll '2dF',      -2;
+roll '0d1',      0;
+roll 'd1',       1;
+roll 'd6+d6',    2;
+roll 'd6+d6+d6', 3;
 
 TODO: {
     local $TODO = 'Not implemented yet';
