@@ -26,7 +26,6 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
-    "Test::MockRandom" => 0,
     "Test::More" => 0
   },
   "VERSION" => "0.01",
@@ -42,7 +41,6 @@ my %FallbackPrereqs = (
   "Moo" => 0,
   "POSIX" => 0,
   "Parse::RecDescent" => 0,
-  "Test::MockRandom" => 0,
   "Test::More" => 0,
   "overload" => 0,
   "strict" => 0,

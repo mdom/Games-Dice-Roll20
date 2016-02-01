@@ -43,7 +43,6 @@
       },
       "test" : {
          "requires" : {
-            "Test::MockRandom" : "0",
             "Test::More" : "0"
          }
       }

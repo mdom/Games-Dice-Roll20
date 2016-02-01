@@ -22,10 +22,32 @@ has amount => (
 
 has modifiers => ( is => 'ro', default => sub { {} } );
 
+has mock => (
+    is      => 'ro',
+    clearer => 'unmock',
+    isa     => sub {
+        return unless defined $_[0];
+        my $type = ref $_[0];
+        die "Argument to mock has to be an array, hash or code reference."
+          if $type !~ '^(CODE|HASH|ARRAY)$';
+    }
+);
+
 sub roll {
     my ($self) = @_;
     my $num_generator;
-    if ( $self->sides eq 'F' ) {
+    if ( $self->mock ) {
+        my %generators = (
+            CODE  => $self->mock,
+            ARRAY => sub { @{ $self->mock } ? shift @{ $self->mock } : 1 },
+            HASH  => sub {
+                my $array = $self->mock->{ 'd' . $self->sides } || [];
+                @{$array} ? shift @{$array} : 1;
+            }
+        );
+        $num_generator = $generators{ ref $self->mock };
+    }
+    elsif ( $self->sides eq 'F' ) {
         $num_generator = sub { int( rand 3 ) - 1 };
     }
     else {

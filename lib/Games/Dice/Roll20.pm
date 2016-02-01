@@ -10,6 +10,17 @@ use POSIX qw(ceil floor);
 
 our $VERSION = '0.01';
 
+has mock => (
+    is      => 'rw',
+    clearer => 'unmock',
+    isa     => sub {
+        return unless defined $_[0];
+        my $type = ref $_[0];
+        die "Argument to mock has to be an array, hash or code reference."
+          if $type !~ '^(CODE|HASH|ARRAY)$';
+    }
+);
+
 ## grammer stolen from https://github.com/agentzh/perl-parsing-library-benchmark
 
 my $grammer = q{
@@ -61,10 +72,11 @@ my $grammer = q{
     dice: count 'd' sides modifiers[sides => $item{sides}](s?)
     {
         $return = Games::Dice::Roll20::Dice->new(
-            amount    => $item{count}->[0],
-            sides     => $item{sides},
-            modifiers => { map { @{$_} } @{ $item{'modifiers(s?)'} } },
-          )
+            amount     => $item{count}->[0],
+            sides      => $item{sides},
+            mock       => $arg{dice_obj}->mock,
+            modifiers  => { map { @{$_} } @{ $item{'modifiers(s?)'} } },
+        );
     }
 
     modifiers:   compounding
@@ -142,7 +154,7 @@ my $parser = Parse::RecDescent->new($grammer);
 
 sub roll {
     my ( $self, $spec ) = @_;
-    return $parser->expr($spec);
+    return $parser->expr( $spec, 0, dice_obj => $self );
 }
 
 sub _reduce_list {
