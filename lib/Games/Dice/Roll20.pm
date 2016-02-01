@@ -2,7 +2,6 @@ package Games::Dice::Roll20;
 use strict;
 use warnings;
 
-#$::RD_TRACE=1;
 use Moo;
 use Parse::RecDescent;
 use Games::Dice::Roll20::Dice;
