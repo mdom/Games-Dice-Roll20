@@ -12,6 +12,13 @@ if ( !$expr ) {
     die "Usage: $0 DICE\n";
 }
 
-print $dice->roll($expr) . "\n";
+my $result = $dice->roll($expr);
+
+if ($result) {
+    print $dice->roll($expr) . "\n";
+}
+else {
+    die "Can't parse expression <$expr>.\n";
+}
 
 exit 0;
