@@ -17,7 +17,7 @@ Games::Dice::Roll20 simulates dice rolls by using a syntax familiar to players
 of role playing games. In contrast to many similar projects it does not only
 support simple constructs like I<2d6+4> but aims to simulate complex dice
 mechanics like exploding, re-rolling and keeping and dropping high or low dice.
-It shoold be a almost complete implementation of the dice specification by
+It should be a almost complete implementation of the dice specification by
 L<Roll20|https://wiki.roll20.net/Dice_Reference>. The supported features and
 deviations from this specifications are listed in L<our own
 specification|https://github.com/mdom/Games-Dice-Roll20/blob/master/lib/Games/Dice/Roll20/Spec.pod>.
