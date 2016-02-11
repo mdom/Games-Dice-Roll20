@@ -28,7 +28,8 @@ specification|https://github.com/mdom/Games-Dice-Roll20/blob/master/lib/Games/Di
 
   my $result = $dice->roll('3d20+5');
 
-Parse the provided dice expression and returns the results as integer.
+Parse the provided dice expression and returns the results as
+integer. Returns undef if the expression can't be parsed.
 
 =head1 COPYRIGHT AND LICENSE
 
