@@ -20,9 +20,9 @@ has mock => (
     }
 );
 
-## grammer stolen from https://github.com/agentzh/perl-parsing-library-benchmark
+## grammar stolen from https://github.com/agentzh/perl-parsing-library-benchmark
 
-my $grammer = q{
+my $grammar = q{
 
     {
         my %valid_functions = (
@@ -149,7 +149,7 @@ my $grammer = q{
     int: /\d+/
 };
 
-my $parser = Parse::RecDescent->new($grammer);
+my $parser = Parse::RecDescent->new($grammar);
 
 sub roll {
     my ( $self, $spec ) = @_;
