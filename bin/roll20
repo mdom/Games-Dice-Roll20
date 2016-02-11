@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use Games::Dice::Roll20;
+
+my $dice = Games::Dice::Roll20->new();
+
+my $expr = shift;
+
+if ( !$expr ) {
+    die "Usage: $0 DICE\n";
+}
+
+print $dice->roll($expr) . "\n";
+
+exit 0;

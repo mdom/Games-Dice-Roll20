@@ -13,7 +13,9 @@ my %WriteMakefileArgs = (
     "ExtUtils::MakeMaker" => 0
   },
   "DISTNAME" => "Games-Dice-Roll20",
-  "EXE_FILES" => [],
+  "EXE_FILES" => [
+    "bin/roll20"
+  ],
   "LICENSE" => "gpl",
   "NAME" => "Games::Dice::Roll20",
   "PREREQ_PM" => {
