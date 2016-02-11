@@ -198,6 +198,14 @@ L<Roll20|https://wiki.roll20.net/Dice_Reference>. The supported features and
 deviations from this specifications are listed in L<our own
 specification|https://github.com/mdom/Games-Dice-Roll20/blob/master/lib/Games/Dice/Roll20/Spec.pod>.
 
+=head1 METHODS
+
+=head2 roll
+
+  my $result = $dice->roll('3d20+5');
+
+Parse the provided dice expression and returns the results as integer.
+
 =head1 COPYRIGHT AND LICENSE
 
 Copyright 2015 Mario Domgoergen C<< <mario@domgoergen.com> >>
