@@ -160,8 +160,7 @@ sub _reduce_list {
     my (@list) = @_;
     my $sum = shift(@list);
     while (@list) {
-        my $op   = shift @list;
-        my $term = shift @list;
+        my ( $op, $term ) = splice( @list, 0, 2 );
         if ( $op eq '+' ) { $sum += $term; }
         elsif ( $op eq '-' ) { $sum -= $term }
         elsif ( $op eq '*' ) { $sum *= $term }
