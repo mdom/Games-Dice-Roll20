@@ -7,7 +7,7 @@ use Parse::RecDescent;
 use Games::Dice::Roll20::Dice;
 use POSIX qw(ceil floor);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 has mock => (
     is      => 'rw',
