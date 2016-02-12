@@ -176,6 +176,10 @@ __END__
 
 =pod
 
+=for HTML <a href="https://travis-ci.org/mdom/Games-Dice-Roll20"><img src="https://travis-ci.org/mdom/Games-Dice-Roll20.svg?branch=master"></a>
+
+=for HTML <a href='https://coveralls.io/r/mdom/Games-Dice-Roll20?branch=master'><img src='https://coveralls.io/repos/mdom/Games-Dice-Roll20/badge.png?branch=master' alt='Coverage Status' /></a>
+
 =head1 NAME
 
 Games::Dice::Roll20 - Simulate dice rolls with Roll20's syntax
