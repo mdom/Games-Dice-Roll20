@@ -158,7 +158,7 @@ sub roll {
 
 sub _reduce_list {
     my (@list) = @_;
-    my $sum = 0 + shift(@list);
+    my $sum = shift(@list);
     while (@list) {
         my $op   = shift @list;
         my $term = shift @list;

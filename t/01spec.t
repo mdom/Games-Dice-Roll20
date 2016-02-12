@@ -92,6 +92,10 @@ roll 'd1',       1;
 roll 'd6+d6',    2;
 roll 'd6+d6+d6', 3;
 
+roll '2/d1', 2;
+roll '2*d1', 2;
+roll '2-d1', 1;
+
 TODO: {
     local $TODO = 'Not implemented yet';
     roll '[[5+3]]', 8;

@@ -4,14 +4,7 @@ use warnings;
 
 use Moo;
 use List::Util qw(sum0);
-use overload
-  '+'   => \&add,
-  '-'   => \&minus,
-  '*'   => \&mult,
-  '/'   => \&div,
-  '0+'  => \&to_number,
-  'cmp' => \&cmp,
-  ;
+use overload '0+' => \&to_number, fallback => 1;
 
 has sides => ( is => 'ro' );
 has amount => (
@@ -153,35 +146,9 @@ sub matches_cp {
     return $throw <= $target if $op eq '<';
 }
 
-sub add {
-    my ( $self, $op ) = @_;
-    return $self->roll + $op;
-}
-
-sub minus {
-    my ( $self, $op, $swap ) = @_;
-    my $result = $self->roll - $op;
-    $result = -$result if $swap;
-    return $result;
-}
-
-sub mult {
-    my ( $self, $op ) = @_;
-    return $self->roll * $op;
-}
-
 sub to_number {
     my ($self) = @_;
     return $self->roll;
 }
-
-sub cmp {
-    my ( $self, $op, $swap ) = @_;
-    my $result = $self->roll cmp $op;
-    $result = -$result if $swap;
-    return $result;
-}
-
-# TODO div is missing
 
 1;
