@@ -33,7 +33,7 @@ my $grammar = q{
             ## to be consistent with roll20 is use the floor + 0.5 method
             ## instead of Math::Random.
 
-            round => sub { POSIX::floor( $_[0] + 0.5 ) },
+            round => sub { POSIX::floor( $_[0] + 0.50000000000008 ) },
         );
 
         my $function_re = join( '|', keys %valid_functions );
