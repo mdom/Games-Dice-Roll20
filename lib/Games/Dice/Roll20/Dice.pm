@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Moo;
-use List::Util qw(sum0);
+use List::Util qw(sum);
 use overload '0+' => \&to_number, fallback => 1;
 
 has sides => ( is => 'ro' );
@@ -117,7 +117,7 @@ sub roll {
         }
     }
     else {
-        $result = sum0 @throws;
+        $result = sum 0, @throws;
     }
 
     return $result;
