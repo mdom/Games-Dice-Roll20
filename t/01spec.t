@@ -10,6 +10,16 @@ sub roll {
     is( $dice->roll($spec), $result, $desc || "$spec -> $result" );
 }
 
+# test unmocked
+
+my $result;
+
+$result = $dice->roll("d6");
+ok( $result <= 6 && $result >= 1, "Test unmocked d6" );
+
+$result = $dice->roll("dF");
+ok( $result <= 2 && $result >= -2, "Test unmocked dF" );
+
 # math expressions
 
 roll 'abs(-2)',     2;
