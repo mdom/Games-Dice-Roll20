@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use Games::Dice::Roll20;
 use Test::More;
+use List::Util 'any';
 
 my $dice = Games::Dice::Roll20->new();
 
@@ -15,10 +16,10 @@ sub roll {
 my $result;
 
 $result = $dice->roll("d6");
-ok( $result <= 6 && $result >= 1, "Test unmocked d6" );
+ok( defined( any { $result == $_ } 1 .. 6 ), "Test unmocked d6" );
 
 $result = $dice->roll("dF");
-ok( $result <= 2 && $result >= -2, "Test unmocked dF" );
+ok( defined( any { $result == $_ } -2 .. 2 ), "Test unmocked dF" );
 
 # math expressions
 
