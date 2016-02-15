@@ -34,7 +34,7 @@ roll '(2+2)*2',     8;
 roll '2*2+2',       6;
 roll '((2+2)*2)+2', 10;
 
-$dice->mock( [ 5, 5, 1, 1 ] );
+$dice->mock( { d6 => [ 5, 5, 1, 1 ] } );
 roll 'ceil(d6/2)',  3;
 roll 'floor(d6/2)', 2;
 
